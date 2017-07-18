@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="radius_elevation">2dp</dimen>
+    <!--Ajout-->
+    <dimen name="card_style_height">128dp</dimen>
+    <dimen name="card_style_width">128dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="cardCornerRadius">2dp</dimen>
+</resources>
