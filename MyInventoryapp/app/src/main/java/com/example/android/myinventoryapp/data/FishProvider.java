@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-
-import com.example.android.myinventoryapp.data.FishContract.FishEntry;
 /**
  * Created by PB on 15/07/2017.
  */
@@ -48,14 +46,14 @@ public class FishProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         switch (match){
             case FISH:
-                cursor = database.query(FishContract.FishEntry.TABLE_NAME, projection, selection, selectionArgs,
+                cursor = database.query(FishContract.FeedEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
             case FISH_ID:
-                selection = FishContract.FishEntry._ID + "=?";
+                selection = FishContract.FeedEntry._ID + "=?";
                 selectionArgs = new String[] {String.valueOf(ContentUris.parseId(uri))};
 
-                cursor = database.query(FishContract.FishEntry.TABLE_NAME, projection, selection, selectionArgs,
+                cursor = database.query(FishContract.FeedEntry.TABLE_NAME, projection, selection, selectionArgs,
                         null, null, sortOrder);
                 break;
             default:
@@ -73,9 +71,9 @@ public class FishProvider extends ContentProvider {
         final int match = sUriMatcher.match(uri);
         switch (match) {
             case FISH:
-                return FishEntry.CONTENT_LIST_TYPE;
+                return FishContract.FeedEntry.CONTENT_LIST_TYPE;
             case FISH_ID:
-                return FishEntry.CONTENT_ITEM_TYPE;
+                return FishContract.FeedEntry.CONTENT_ITEM_TYPE;
             default:
                 throw new IllegalStateException("Unknown URI " + uri + " with match " + match);
         }
@@ -95,24 +93,24 @@ public class FishProvider extends ContentProvider {
 
     @Nullable
     private Uri insertFish(Uri uri, ContentValues values) {
-        String name = values.getAsString(FishEntry.COLUMN_FISH_NAME);
+        String name = values.getAsString(FishContract.FeedEntry.COLUMN_ITEM_NAME);
         if (name == null) {
-            throw new IllegalArgumentException("Fish requires a name");
+            throw new IllegalArgumentException("Item requires a name");
         }
 
-        Integer quantity = values.getAsInteger(FishEntry.COLUMN_FISH_QUANTITY);
+        Integer quantity = values.getAsInteger(FishContract.FeedEntry.COLUMN_ITEM_QUANTITY);
         if (quantity != null && quantity < 0) {
-            throw new IllegalArgumentException("Fish requires valid quantity");
+            throw new IllegalArgumentException("Item requires valid quantity");
         }
 
-        Integer price = values.getAsInteger(FishEntry.COLUMN_FISH_PRICE);
+        Integer price = values.getAsInteger(FishContract.FeedEntry.COLUMN_ITEM_PRICE);
         if (price != null && price < 0) {
-            throw new IllegalArgumentException("Fish requires valid price");
+            throw new IllegalArgumentException("Item requires valid price");
         }
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        long id = database.insert(FishEntry.TABLE_NAME, null, values);
+        long id = database.insert(FishContract.FeedEntry.TABLE_NAME, null, values);
         if (id == -1) {
             Log.e(LOG_TAG, "Failed to insert row for " + uri);
             return null;
@@ -135,13 +133,13 @@ public class FishProvider extends ContentProvider {
         switch (match) {
             case FISH:
                 // Delete all rows that match the selection and selection args
-                rowsDeleted = database.delete(FishEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = database.delete(FishContract.FeedEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             case FISH_ID:
                 // Delete a single row given by the ID in the URI
-                selection = FishEntry._ID + "=?";
+                selection = FishContract.FeedEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
-                rowsDeleted = database.delete(FishEntry.TABLE_NAME, selection, selectionArgs);
+                rowsDeleted = database.delete(FishContract.FeedEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Deletion is not supported for " + uri);
@@ -162,7 +160,7 @@ public class FishProvider extends ContentProvider {
             case FISH:
                 return updateFish(uri, values, selection, selectionArgs);
             case FISH_ID:
-                selection = FishEntry._ID + "=?";
+                selection = FishContract.FeedEntry._ID + "=?";
                 selectionArgs = new String[] { String.valueOf(ContentUris.parseId(uri)) };
                 return updateFish(uri, values, selection, selectionArgs);
             default:
@@ -171,24 +169,24 @@ public class FishProvider extends ContentProvider {
     }
 
     private int updateFish(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (values.containsKey(FishEntry.COLUMN_FISH_NAME)) {
-            String name = values.getAsString(FishEntry.COLUMN_FISH_NAME);
+        if (values.containsKey(FishContract.FeedEntry.COLUMN_ITEM_NAME)) {
+            String name = values.getAsString(FishContract.FeedEntry.COLUMN_ITEM_NAME);
             if (name == null) {
-                throw new IllegalArgumentException("Fish requires a name");
+                throw new IllegalArgumentException("Item requires a name");
             }
         }
 
-        if (values.containsKey(FishEntry.COLUMN_FISH_QUANTITY)) {
-            Integer quantity = values.getAsInteger(FishEntry.COLUMN_FISH_QUANTITY);
+        if (values.containsKey(FishContract.FeedEntry.COLUMN_ITEM_QUANTITY)) {
+            Integer quantity = values.getAsInteger(FishContract.FeedEntry.COLUMN_ITEM_QUANTITY);
             if (quantity == null || quantity < 0) {
-                throw new IllegalArgumentException("Fish requires valid quantity");
+                throw new IllegalArgumentException("Item requires valid quantity");
             }
         }
 
-        if (values.containsKey(FishEntry.COLUMN_FISH_PRICE)) {
-            Integer price = values.getAsInteger(FishEntry.COLUMN_FISH_PRICE);
+        if (values.containsKey(FishContract.FeedEntry.COLUMN_ITEM_PRICE)) {
+            Integer price = values.getAsInteger(FishContract.FeedEntry.COLUMN_ITEM_PRICE);
             if (price == null || price < 0) {
-                throw new IllegalArgumentException("Fish requires valid price");
+                throw new IllegalArgumentException("Item requires valid price");
             }
         }
 
@@ -198,7 +196,7 @@ public class FishProvider extends ContentProvider {
 
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        int rowsUpdated = database.update(FishEntry.TABLE_NAME, values, selection, selectionArgs);
+        int rowsUpdated = database.update(FishContract.FeedEntry.TABLE_NAME, values, selection, selectionArgs);
 
         if (rowsUpdated != 0) {
             getContext().getContentResolver().notifyChange(uri, null);

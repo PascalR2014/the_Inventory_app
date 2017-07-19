@@ -11,12 +11,12 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/fish_picture"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:alpha="0.6"
+            android:id="@+id/add_picture"
+            android:layout_width="129dp"
+            android:layout_height="135dp"
+            android:alpha="0.9"
             android:background="@color/colorPrimary"
-            android:padding="24dp"
+            android:padding="20dp"
             android:src="@drawable/ic_add_photo" />
 
         <LinearLayout
@@ -27,10 +27,10 @@
             android:paddingLeft="4dp">
 
             <EditText
-                android:id="@+id/edit_fish_name"
+                android:id="@+id/edit_product_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Fish Name"
+                android:hint="Product name"
                 android:inputType="textCapWords" />
 
             <LinearLayout
@@ -46,13 +46,13 @@
 
                     <!-- Price field -->
                     <EditText
-                        android:id="@+id/edit_fish_price"
+                        android:id="@+id/edit_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Fish Price"
+                        android:hint="Price"
                         android:inputType="numberDecimal" />
 
-                    <!-- Units for price ($) -->
+                    <!-- Currency for price (€) -->
                     <TextView
                         android:id="@+id/label_price_units"
                         android:layout_width="wrap_content"
@@ -61,7 +61,7 @@
                         android:layout_alignParentRight="true"
                         android:paddingRight="16dp"
                         android:paddingTop="16dp"
-                        android:text="$" />
+                        android:text="€" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -71,25 +71,26 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="-"
-                    android:onClick="decreaseQuantity"/>
+                    android:layout_weight="0.5"
+                    android:onClick="decreaseQuantity"
+                    android:text="-" />
 
                 <EditText
-                    android:id="@+id/edit_fish_quantity"
+                    android:id="@+id/edit_quantity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="0.4"
                     android:gravity="center"
-                    android:hint="Quantity"
+                    android:hint="Order"
                     android:inputType="numberDecimal" />
 
                 <Button
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:text="+"
                     android:onClick="increaseQuantity"/>
             </LinearLayout>

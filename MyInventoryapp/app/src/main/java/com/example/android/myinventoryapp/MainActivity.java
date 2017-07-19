@@ -24,8 +24,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.myinventoryapp.data.FishContract;
-import com.example.android.myinventoryapp.data.FishContract.FishEntry;
+import com.example.android.myinventoryapp.data.FishContract.FeedEntry;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
@@ -64,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, EditorActivity.class);
-                Uri currentFishUri = ContentUris.withAppendedId(FishEntry.CONTENT_URI, id);
+                Uri currentFishUri = ContentUris.withAppendedId(FeedEntry.CONTENT_URI, id);
 
                 intent.setData(currentFishUri);
 
@@ -123,21 +122,21 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     private void deleteAllFish() {
-        int rowsDeleted = getContentResolver().delete(FishEntry.CONTENT_URI, null, null);
+        int rowsDeleted = getContentResolver().delete(FeedEntry.CONTENT_URI, null, null);
         Log.v("CatalogActivity", rowsDeleted + " rows deleted from fish database");
     }
 
     private void insertFish() {
         ContentValues values = new ContentValues();
-        values.put(FishEntry.COLUMN_FISH_IMAGE, FishEntry.DEFAULT_IMAGE);
-        values.put(FishEntry.COLUMN_FISH_NAME, "Toto");
-        values.put(FishEntry.COLUMN_FISH_PRICE, "7");
-        values.put(FishEntry.COLUMN_FISH_QUANTITY, "20");
-        values.put(FishEntry.COLUMN_SUPPLIER_NAME, "Jason");
-        values.put(FishEntry.COLUMN_SUPPLIER_PHONE, "00000000");
-        values.put(FishEntry.COLUMN_SUPPLIER_EMAIL, "j.son@mail.com");
+        values.put(FeedEntry.COLUMN_ITEM_IMAGE, FeedEntry.DEFAULT_IMAGE);
+        values.put(FeedEntry.COLUMN_ITEM_NAME, "Toto");
+        values.put(FeedEntry.COLUMN_ITEM_PRICE, "7");
+        values.put(FeedEntry.COLUMN_ITEM_QUANTITY, "20");
+        values.put(FeedEntry.COLUMN_SUPPLIER_NAME, "Jason");
+        values.put(FeedEntry.COLUMN_SUPPLIER_PHONE, "00000000");
+        values.put(FeedEntry.COLUMN_SUPPLIER_EMAIL, "j.son@mail.com");
 
-        Uri newUri = getContentResolver().insert(FishEntry.CONTENT_URI, values);
+        Uri newUri = getContentResolver().insert(FeedEntry.CONTENT_URI, values);
         Log.v("MainActivity", "Uri of new fish: " + newUri);
     }
 
@@ -145,18 +144,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
-                FishEntry._ID,
-                FishEntry.COLUMN_FISH_IMAGE,
-                FishEntry.COLUMN_FISH_NAME,
-                FishEntry.COLUMN_FISH_PRICE,
-                FishEntry.COLUMN_FISH_QUANTITY,
-                FishEntry.COLUMN_SUPPLIER_NAME,
-                FishEntry.COLUMN_SUPPLIER_PHONE,
-                FishEntry.COLUMN_SUPPLIER_EMAIL};
+                FeedEntry._ID,
+                FeedEntry.COLUMN_ITEM_IMAGE,
+                FeedEntry.COLUMN_ITEM_NAME,
+                FeedEntry.COLUMN_ITEM_PRICE,
+                FeedEntry.COLUMN_ITEM_QUANTITY,
+                FeedEntry.COLUMN_SUPPLIER_NAME,
+                FeedEntry.COLUMN_SUPPLIER_PHONE,
+                FeedEntry.COLUMN_SUPPLIER_EMAIL};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
-                FishEntry.CONTENT_URI,   // Provider content URI to query
+                FeedEntry.CONTENT_URI,   // Provider content URI to query
                 projection,             // Columns to include in the resulting Cursor
                 null,                   // No selection clause
                 null,                   // No selection arguments
@@ -179,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onClickItem (long id) {
         Intent intent = new Intent(MainActivity.this, EditorActivity.class);
 
-        Uri currentProductUri = ContentUris.withAppendedId(FishContract.FishEntry.CONTENT_URI, id);
+        Uri currentProductUri = ContentUris.withAppendedId(FeedEntry.CONTENT_URI, id);
         intent.setData(currentProductUri);
 
         startActivity(intent);
@@ -187,18 +186,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void onSellFish(long id, int quantity ){
         int buying = 0;
-        Uri currentFishUri = ContentUris.withAppendedId(FishEntry.CONTENT_URI, id);
+        Uri currentFishUri = ContentUris.withAppendedId(FeedEntry.CONTENT_URI, id);
         Log.v("CatalogActivity", "Uri: " + currentFishUri);
 
         if(quantity > 0) {
             quantity--;
             buying++;
             //buyNumber.setText(String.valueOf(buying));
-            Toast.makeText(this, "Fish buyed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Item(s) sell(s) !", Toast.LENGTH_SHORT).show();
         }
 
         ContentValues values = new ContentValues();
-        values.put(FishEntry.COLUMN_FISH_QUANTITY, quantity);
+        values.put(FeedEntry.COLUMN_ITEM_QUANTITY, quantity);
         getContentResolver().update(currentFishUri, values, null, null);
     }
 }

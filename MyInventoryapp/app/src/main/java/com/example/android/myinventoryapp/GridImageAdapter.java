@@ -47,17 +47,8 @@ public class GridImageAdapter extends BaseAdapter{
         return imageView;
     }
 
-    // references to our images
+    // references to our catalogue images
     private Integer[] mThumbIds = {
-            /* Travaux en cours
-            R.drawable.fish, R.drawable.fish1,
-            R.drawable.fish2, R.drawable.fish3,
-            R.drawable.fish4, R.drawable.fish5,
-            R.drawable.fish6, R.drawable.fish8,
-            R.drawable.fish9, R.drawable.fish10,
-            R.drawable.fish11, R.drawable.fish12,
-            R.drawable.fish13, R.drawable.fish14,
-            R.drawable.fish15
-            */
+
     };
 }

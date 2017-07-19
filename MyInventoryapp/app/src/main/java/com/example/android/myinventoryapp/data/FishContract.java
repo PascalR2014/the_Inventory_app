@@ -22,17 +22,17 @@ public final class FishContract {
     public static final String PATH_FISH = "fish";
 
     /* Inner class that defines the table contents */
-    public static class FishEntry implements BaseColumns{
+    public static class FeedEntry implements BaseColumns{
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_FISH);
 
-        public final static String TABLE_NAME = "fishing";
+        public final static String TABLE_NAME = "item";
 
         public final static String _ID = BaseColumns._ID;
 
-        public final static String COLUMN_FISH_IMAGE = "fish_image";
-        public final static String COLUMN_FISH_NAME = "fish_name";
-        public final static String COLUMN_FISH_QUANTITY = "fish_quantity";
-        public final static String COLUMN_FISH_PRICE = "fish_price";
+        public final static String COLUMN_ITEM_IMAGE = "item_image";
+        public final static String COLUMN_ITEM_NAME = "item_name";
+        public final static String COLUMN_ITEM_QUANTITY = "item_quantity";
+        public final static String COLUMN_ITEM_PRICE = "price";
         public static final String COLUMN_SUPPLIER_NAME = "supplier_name";
         public static final String COLUMN_SUPPLIER_PHONE = "supplier_phone";
         public static final String COLUMN_SUPPLIER_EMAIL = "supplier_email";
@@ -40,7 +40,7 @@ public final class FishContract {
         public static final String DEFAULT_IMAGE = "android.resource://com.example.android.myinventoryapp/drawable/default_fish";
 
         /**
-         * The MIME type of the {@link #CONTENT_URI} for a list of fish.
+         * The MIME type of the {@link #CONTENT_URI} for a list of item.
          */
         public static final String CONTENT_LIST_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_FISH;

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.android.myinventoryapp.data.FishContract.FishEntry;
-
 /**
  * Created by PB on 15/07/2017.
  */
@@ -21,15 +19,15 @@ public class FishDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String SQL_CREATE_FISH_TABLE = "CREATE TABLE " + FishEntry.TABLE_NAME + " ("
-                + FishEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + FishEntry.COLUMN_FISH_IMAGE+ " TEXT NOT NULL, "
-                + FishEntry.COLUMN_FISH_NAME + " TEXT NOT NULL, "
-                + FishEntry.COLUMN_FISH_PRICE + " INTEGER NOT NULL DEFAULT 0, "
-                + FishEntry.COLUMN_FISH_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
-                + FishEntry.COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
-                + FishEntry.COLUMN_SUPPLIER_PHONE + " TEXT NOT NULL, "
-                + FishEntry.COLUMN_SUPPLIER_EMAIL + " TEXT NOT NULL);";
+        String SQL_CREATE_FISH_TABLE = "CREATE TABLE " + FishContract.FeedEntry.TABLE_NAME + " ("
+                + FishContract.FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + FishContract.FeedEntry.COLUMN_ITEM_IMAGE+ " TEXT NOT NULL, "
+                + FishContract.FeedEntry.COLUMN_ITEM_NAME + " TEXT NOT NULL, "
+                + FishContract.FeedEntry.COLUMN_ITEM_PRICE + " INTEGER NOT NULL DEFAULT 0, "
+                + FishContract.FeedEntry.COLUMN_ITEM_QUANTITY + " INTEGER NOT NULL DEFAULT 0, "
+                + FishContract.FeedEntry.COLUMN_SUPPLIER_NAME + " TEXT NOT NULL, "
+                + FishContract.FeedEntry.COLUMN_SUPPLIER_PHONE + " TEXT NOT NULL, "
+                + FishContract.FeedEntry.COLUMN_SUPPLIER_EMAIL + " TEXT NOT NULL);";
         db.execSQL(SQL_CREATE_FISH_TABLE);
     }
 

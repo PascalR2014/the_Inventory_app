@@ -29,7 +29,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.android.myinventoryapp.data.FishContract.FishEntry;
+import com.example.android.myinventoryapp.data.FishContract.FeedEntry;
 
 /**
  * Created by PB on 15/07/2017.
@@ -78,10 +78,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         // Find all relevant views that we will need to read user input from
-        mImage = (ImageView) findViewById(R.id.fish_picture);
-        mNameEditText = (EditText) findViewById(R.id.edit_fish_name);
-        mPriceEditText = (EditText) findViewById(R.id.edit_fish_price);
-        mQuantityEditText = (EditText) findViewById(R.id.edit_fish_quantity);
+        mImage = (ImageView) findViewById(R.id.add_picture);
+        mNameEditText = (EditText) findViewById(R.id.edit_product_name);
+        mPriceEditText = (EditText) findViewById(R.id.edit_price);
+        mQuantityEditText = (EditText) findViewById(R.id.edit_quantity);
 
         mSupplierName = (EditText) findViewById(R.id.edit_sup_name);
         mSupplierPhone = (EditText) findViewById(R.id.edit_sup_phone);
@@ -196,14 +196,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(DialogInterface dialog, int id) {
                 // intent to email
                 String sender = mSupplierEmail.getText().toString().trim();
-                String bodyMessage = "Hi, we want to order more " +
-                        mNameEditText.getText().toString().trim() + "./nThank you";
+                String bodyMessage = "[Name of supplier] Hi,[Name of contact]. [Name of your society], we want to order more [item name, quantity] " +
+                        mNameEditText.getText().toString().trim() + "./nThank you [PascalR2014, github account.]";
 
                 Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
                 intent.setType("text/plain");
                 intent.setData(Uri.parse("mailto:" + sender));
 
-                intent.putExtra(Intent.EXTRA_SUBJECT, "New order");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Fake new order, [to my inventory app],[Name of your society, number]");
                 intent.putExtra(Intent.EXTRA_TEXT, bodyMessage);
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
@@ -292,46 +292,46 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         ContentValues values = new ContentValues();
 
         if (imageUri == null) {
-            Toast.makeText(this, "Fish image required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Image item required", Toast.LENGTH_SHORT).show();
             return;
-        } else values.put(FishEntry.COLUMN_FISH_IMAGE, imageUri.toString());
+        } else values.put(FeedEntry.COLUMN_ITEM_IMAGE, imageUri.toString());
 
         if (TextUtils.isEmpty(nameString)) {
-            Toast.makeText(this, "Fish name required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Item name required", Toast.LENGTH_SHORT).show();
             return;
-        }else values.put(FishEntry.COLUMN_FISH_NAME, nameString);
+        }else values.put(FeedEntry.COLUMN_ITEM_NAME, nameString);
 
         if (TextUtils.isEmpty(priceString)) {
-            Toast.makeText(this, "Fish price required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Price required", Toast.LENGTH_SHORT).show();
             return;
-        }else values.put(FishEntry.COLUMN_FISH_PRICE, priceString);
+        }else values.put(FeedEntry.COLUMN_ITEM_PRICE, priceString);
 
         if (TextUtils.isEmpty(quantityString)) {
-            Toast.makeText(this, "Fish quantity required", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Item quantity required", Toast.LENGTH_SHORT).show();
             return;
-        }else values.put(FishEntry.COLUMN_FISH_QUANTITY, quantityString);
+        }else values.put(FeedEntry.COLUMN_ITEM_QUANTITY, quantityString);
 
         if (TextUtils.isEmpty(supplierNameString)) {
             Toast.makeText(this, "Supplier name required", Toast.LENGTH_SHORT).show();
             return;
-        }else values.put(FishEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
+        }else values.put(FeedEntry.COLUMN_SUPPLIER_NAME, supplierNameString);
 
         if (TextUtils.isEmpty(supplierPhoneString)) {
             Toast.makeText(this, "Supplier phone required", Toast.LENGTH_SHORT).show();
             return;
-        }else values.put(FishEntry.COLUMN_SUPPLIER_PHONE, supplierPhoneString);
+        }else values.put(FeedEntry.COLUMN_SUPPLIER_PHONE, supplierPhoneString);
 
         if (TextUtils.isEmpty(supplierEmailString)) {
             Toast.makeText(this, "Supplier email required", Toast.LENGTH_SHORT).show();
             return;
-        }else values.put(FishEntry.COLUMN_SUPPLIER_EMAIL, supplierEmailString);
+        }else values.put(FeedEntry.COLUMN_SUPPLIER_EMAIL, supplierEmailString);
 
         // New Product
         if (mCurrentFishUri == null) {
 
             // This is a NEW pet, so insert a new fish into the provider,
             // returning the content URI for the new fish.
-            Uri newUri = getContentResolver().insert(FishEntry.CONTENT_URI, values);
+            Uri newUri = getContentResolver().insert(FeedEntry.CONTENT_URI, values);
 
             // Show a toast message depending on whether or not the insertion was successful.
             if (newUri == null) {
@@ -405,14 +405,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         // Define a projection that specifies the columns from the table we care about.
         String[] projection = {
-                FishEntry._ID,
-                FishEntry.COLUMN_FISH_IMAGE,
-                FishEntry.COLUMN_FISH_NAME,
-                FishEntry.COLUMN_FISH_PRICE,
-                FishEntry.COLUMN_FISH_QUANTITY,
-                FishEntry.COLUMN_SUPPLIER_NAME,
-                FishEntry.COLUMN_SUPPLIER_PHONE,
-                FishEntry.COLUMN_SUPPLIER_EMAIL};
+                FeedEntry._ID,
+                FeedEntry.COLUMN_ITEM_IMAGE,
+                FeedEntry.COLUMN_ITEM_NAME,
+                FeedEntry.COLUMN_ITEM_PRICE,
+                FeedEntry.COLUMN_ITEM_QUANTITY,
+                FeedEntry.COLUMN_SUPPLIER_NAME,
+                FeedEntry.COLUMN_SUPPLIER_PHONE,
+                FeedEntry.COLUMN_SUPPLIER_EMAIL};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -430,13 +430,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
         if (cursor.moveToFirst()) {
             // Find the columns of fish attributes that we're interested in
-            int imageColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_FISH_IMAGE);
-            int nameColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_FISH_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_FISH_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_FISH_QUANTITY);
-            int supNameColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_SUPPLIER_NAME);
-            int supPhoneColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_SUPPLIER_PHONE);
-            int supEmailColumnIndex = cursor.getColumnIndex(FishEntry.COLUMN_SUPPLIER_EMAIL);
+            int imageColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_ITEM_IMAGE);
+            int nameColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_ITEM_NAME);
+            int priceColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_ITEM_PRICE);
+            int quantityColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_ITEM_QUANTITY);
+            int supNameColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_SUPPLIER_NAME);
+            int supPhoneColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_SUPPLIER_PHONE);
+            int supEmailColumnIndex = cursor.getColumnIndex(FeedEntry.COLUMN_SUPPLIER_EMAIL);
 
             // Extract out the value from the Cursor for the given column index
             String imageUriString = cursor.getString(imageColumnIndex);
@@ -472,7 +472,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
     public void decreaseQuantity(View view) {
         if (quantity <= 1) {
-            Toast.makeText(this, "Quantity can be under 1 element.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Quantity can't be under 1 item.", Toast.LENGTH_SHORT).show();
         } else {
             quantity--;
             mQuantityEditText.setText(String.valueOf(quantity));

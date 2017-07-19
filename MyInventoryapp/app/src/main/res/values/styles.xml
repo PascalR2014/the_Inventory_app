@@ -21,12 +21,8 @@
 
     <!--CardStyle-->
     <style name="CardStyle" parent="std_layout">
-        <item name="android:layout_height">@dimen/card_style_height</item>
-        <item name="android:layout_width">@dimen/card_style_width</item>
-        <item name="android:elevation">@dimen/card_elevation</item>
-        <!-- No match card_view functionnality !
-        <item name="card_view:cardCornerRadius">@dimen/cardCornerRadius</item>
-        -->
+        <item name="cardCornerRadius">@dimen/radius_elevation</item>
+        <item name="cardElevation">@dimen/radius_elevation</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>

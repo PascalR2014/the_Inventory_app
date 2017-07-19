@@ -20,7 +20,7 @@
             android:layout_width="128dp"
             android:layout_height="128dp"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/aquarium" />
+            android:src="@drawable/cart" />
 
         <TextView
             android:id="@+id/empty_title_text"
@@ -37,10 +37,10 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/animals" />
+        app:srcCompat="@drawable/add_product"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
